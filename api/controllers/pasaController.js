@@ -23,6 +23,10 @@ exports.get_pasa_detalle = function(req, res){
 				id_mercancia: parseInt(req.params.id_mercancia)
 			}
 		}).then(pasan => {
+			if(pasan.length === 0){
+				res.sendStatus(404);
+				return;
+			}
 			let i = 0;
 			let detalles = []
 			for (i = 0; i<pasan.length; i++){
