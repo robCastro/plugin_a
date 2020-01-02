@@ -7,6 +7,6 @@ const cors = require('cors');
 app.listen(port);
 app.use(cors());
 
-app.use('/api/plugina', require('./api/routes/routes'));
+app.use('/api/plugin', require('./api/routes/routes'));
 
 console.log('RESTful API server started on: ' + port);
