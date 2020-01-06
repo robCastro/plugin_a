@@ -86,7 +86,11 @@ exports.post_pasa = function(req, res) {
 	}
 	console.log(errores);
 	if(errores.length > 0){
-		res.status(400).json(errores);
+		let msg = "";
+		errores.forEach(error => {
+			msg = msg + "<ul>" + error + "</ul>";
+		});
+		res.status(400).json({msg: msg});
 		return;
 	}
 	Pasa.create({
