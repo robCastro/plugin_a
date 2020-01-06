@@ -10,8 +10,9 @@ const router = express.Router();
 
 
 router.get('/aduana', pluginAController.get_aduanas);
-router.get('/pasa/:id_mercancia/detalle', pasaController.get_pasa_detalle);
 
+router.get('/pasa/:id_mercancia/detalle', pasaController.get_pasa_detalle);
+router.post('/pasa', pasaController.post_pasa);
 
 router.get('/iva', ivaController.get_iva);
 

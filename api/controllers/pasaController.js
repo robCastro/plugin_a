@@ -54,3 +54,54 @@ exports.get_pasa_detalle = function(req, res){
 			console.log(err);
 		});
 }
+
+
+exports.post_pasa = function(req, res) {
+	let {id_transporte, id_mercancia, iva, arancel, aduana, retenida_pasa, multa_pasa} = req.body;
+	//console.log(id_transporte, id_mercancia, iva, arancel, aduana, retenida_pasa, multa_pasa);
+	let errores = [];
+	if(isNaN(parseInt(id_transporte))){
+		errores.push('Especificar transporte');
+	}
+	if(isNaN(parseInt(id_mercancia))){
+		errores.push('Especificar mercancia');
+	}
+	if(iva === null || typeof iva === 'undefined' || isNaN(parseInt(iva.id_iva))){
+		errores.push('Especificar Iva');
+	}
+	if(arancel === null || typeof arancel === 'undefined' || isNaN(parseInt(arancel.id_arancel))){
+		errores.push('Especificar arancel');
+	}
+	if(aduana === null || typeof aduana === 'undefined' || isNaN(parseInt(aduana.id_aduana))){
+		errores.push('Especificar aduana');
+	}
+	if(typeof retenida_pasa === 'undefined' || retenida_pasa === null){
+		errores.push('Especificar si se retuvo la mercancia');
+	}
+	if(typeof multa_pasa === 'undefined' || multa_pasa === null){
+		errores.push('Especificar multa, si no se multó poner 0');
+	}
+	else if(multa_pasa < 0){
+		errores.push('No se permiten numeros negativos para la multa');
+	}
+	console.log(errores);
+	if(errores.length > 0){
+		res.status(400).json(errores);
+		return;
+	}
+	Pasa.create({
+		id_iva: iva.id_iva,
+		id_aduana: aduana.id_aduana,
+		id_arancel: arancel.id_arancel,
+		fecha_pasa: new Date(),
+		retenida_pasa: retenida_pasa,
+		multa_pasa: multa_pasa,
+		id_transporte: id_transporte,
+		id_mercancia: id_mercancia,
+	}).then(pasa => {
+		res.status(200).json(pasa);
+	}).catch(err => {
+		console.log(err);
+		res.status(500).json({msg: 'Error guardando el paso'});
+	});
+}
