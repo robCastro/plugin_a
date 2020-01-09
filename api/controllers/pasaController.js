@@ -104,6 +104,9 @@ exports.post_pasa = function(req, res) {
 		id_mercancia: id_mercancia,
 	}).then(pasa => {
 		res.status(200).json(pasa);
+		let clienteSocket = req.app.get('clienteSocket');
+		clienteSocket.emit('nuevo_paso', pasa.id_mercancia);
+		console.log('Nuevo Paso enviado');
 	}).catch(err => {
 		console.log(err);
 		res.status(500).json({msg: 'Error guardando el paso'});
